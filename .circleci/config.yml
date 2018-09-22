@@ -32,6 +32,7 @@ orbs:
                       circleci config pack << parameters.path >> >> $tmpfile
                       mkdir -p << parameters.workspace-path >>
                       mv $tmpfile << parameters.workspace-path >>
+                - run: ls -al
                 - persist_to_workspace:
                     name: parameters.workspace-path passed as << parameters.workspace-path >>, so putting the packed orb into that path.
                     root: .
