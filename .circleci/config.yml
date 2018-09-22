@@ -43,4 +43,5 @@ workflows:
     jobs:
       - orb-utils/pack-and-validate-orb:
           path: ./src
-          workspace-path: /orb-to-publish/
+          workspace-path: orb-to-publish/
+          
