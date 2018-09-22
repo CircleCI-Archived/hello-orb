@@ -1,0 +1,6 @@
+steps:
+  - run:
+      name: "Show system information"
+      command: |
+        echo "uname:" $(uname -a)
+        echo "arch: " $(arch)

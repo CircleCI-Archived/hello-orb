@@ -1,0 +1,19 @@
+version: 2.1
+description: An orb with some simple ways to help you with your first build.
+
+executors:
+  default:
+    parameters:
+      tag:
+        type: string
+        default: "curl-browsers"
+    docker:
+      - image:  circleci/buildpack-deps:<< parameters.tag >>
+
+jobs:
+  hello-build:
+    executor: default
+    steps:
+      - hello-triggerer
+      - circleci-env-highlights
+      - system-info

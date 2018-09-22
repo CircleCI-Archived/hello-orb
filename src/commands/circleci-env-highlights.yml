@@ -1,0 +1,11 @@
+steps:
+  - run:
+      name: "Show some of the CircleCI runtime env vars"
+      command: |
+        echo "TRIGGERER: ${CIRCLE_USERNAME}"
+        echo "BUILD_NUMBER: ${CIRCLE_BUILD_NUM}"
+        echo "BUILD_URL: ${CIRCLE_BUILD_URL}"
+        echo "BRANCH: ${CIRCLE_BRANCH}"
+        echo "RUNNING JOB: ${CIRCLE_JOB}"
+        echo "JOB PARALLELISM: ${CIRCLE_NODE_TOTAL}"
+        echo "CIRCLE_REPOSITORY_URL: ${CIRCLE_REPOSITORY_URL}"

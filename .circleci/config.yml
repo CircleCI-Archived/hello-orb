@@ -1,0 +1,23 @@
+version: 2.1
+
+orbs:
+  orb-utils:
+    orbs:
+      cli: circleci/circleci-cli@volatile
+    jobs:
+      pack-and-validate-orb:
+        parameters:
+          path:
+            type: string
+        executor: cli/default
+        steps:
+          - checkout
+          - run:
+              name: "Pack << parameters.path >> and validate it's a well-formed orb."
+              command: circleci config pack << parameters.path >> | circleci orb validate -
+
+workflows:
+  btd:
+    jobs:
+      - orb-utils/pack-and-validate-orb:
+          path: ./src

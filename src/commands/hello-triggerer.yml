@@ -1,0 +1,6 @@
+parameters:
+  to:
+    type: string
+    default: "${CIRCLE_USERNAME}"
+steps:
+  - run: echo "Hello << parameters.to >>"
