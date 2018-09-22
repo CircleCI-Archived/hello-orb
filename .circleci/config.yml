@@ -25,7 +25,7 @@ orbs:
               condition: << parameters.workspace-path >>
               steps:
                 - run:
-                    name: 
+                    name: Save the packed orb to `<< parameters.workspace-path >>`
                     # TODO: this is more fragile than is ideal
                     command: |
                       tmpfile=$(mktemp orb.XXXX)
@@ -34,7 +34,7 @@ orbs:
                       mv $tmpfile << parameters.workspace-path >>
                 - run: ls -al
                 - persist_to_workspace:
-                    name: parameters.workspace-path passed as << parameters.workspace-path >>, so putting the packed orb into that path.
+                    name: parameters.workspace-path passed as `<< parameters.workspace-path >>`, so putting the packed orb into that path.
                     root: .
                     paths:
                       - << parameters.workspace-path >>
@@ -44,4 +44,3 @@ workflows:
       - orb-utils/pack-and-validate-orb:
           path: ./src
           workspace-path: orb-to-publish/
-          
