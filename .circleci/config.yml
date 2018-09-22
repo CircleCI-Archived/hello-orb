@@ -6,18 +6,40 @@ orbs:
       cli: circleci/circleci-cli@volatile
     jobs:
       pack-and-validate-orb:
+        description: "Pack the contents of an orb for publishing and validate the orb is well-formed."
         parameters:
           path:
+            description: "The root of where the code for the orb lives relative to the root of the repo."
             type: string
+          workspace-path:
+            description: "When provided, save the contents of the orb into the workspace at the given path. Empty string (default value) is a no-op."
+            type: string
+            default: ""
         executor: cli/default
         steps:
           - checkout
           - run:
               name: "Pack << parameters.path >> and validate it's a well-formed orb."
               command: circleci config pack << parameters.path >> | circleci orb validate -
-
+          - when:
+              condition: << parameters.workspace-path >>
+              steps:
+                - run:
+                    name: 
+                    # TODO: this is more fragile than is ideal
+                    command: |
+                      tmpfile=$(mktemp orb.XXXX)
+                      circleci config pack << parameters.path >> >> $tmpfile
+                      mkdir -p << parameters.workspace-path >>
+                      mv $tmpfile << parameters.workspace-path >>
+                - persist_to_workspace:
+                    name: parameters.workspace-path passed as << parameters.workspace-path >>, so putting the packed orb into that path.
+                    root: .
+                    paths:
+                      - << parameters.workspace-path >>
 workflows:
   btd:
     jobs:
       - orb-utils/pack-and-validate-orb:
           path: ./src
+          workspace-path: /orb-to-publish/
