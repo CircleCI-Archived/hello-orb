@@ -37,7 +37,7 @@ orbs:
                 echo 'export PACK_AND_VALIDATE_ORB_TEMPFILE="$tmpfile"' >> $BASH_ENV
           - run: 
               name: "Validate whether this is a well-formed orb."
-              command: circleci orb validate $PACK_AND_VALIDATE_ORB_FILE
+              command: circleci orb validate $PACK_AND_VALIDATE_ORB_TEMPFILE
           - when:
               condition: << parameters.workspace-path >>
               steps:
@@ -45,7 +45,7 @@ orbs:
                     name: Save the packed orb to `<< parameters.workspace-path >>`
                     command: |
                       mkdir -p << parameters.workspace-path >>
-                      cp $PACK_AND_VALIDATE_ORB_FILE << parameters.workspace-path >>
+                      cp $PACK_AND_VALIDATE_ORB_TEMPFILE << parameters.workspace-path >>
                 - persist_to_workspace:
                     name: "putting the packed orb into `<< parameters.workspace-path >>` because that value was passed as `parameters.workspace-path`."
                     root: .
@@ -59,7 +59,7 @@ orbs:
                     # TODO: This is duplicated from above
                     command: |
                       mkdir -p << parameters.artifact-path >>
-                      cp $PACK_AND_VALIDATE_ORB_FILE << parameters.artifact-path >>
+                      cp $PACK_AND_VALIDATE_ORB_TEMPFILE << parameters.artifact-path >>
                 - store_artifacts:
                     name: "Storing the artifact to << parameters.artifact-path >>"
                     path: << parameters.artifact-path >>
