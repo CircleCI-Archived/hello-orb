@@ -19,10 +19,10 @@ orbs:
             description: "When provided, save the contents of the orb as an artifact at the path specified. Empty string (also the default value) is a no-op."
             type: string
             default: ""
-          destination-path:
-            description: "The path where the packed string will be stored as a file. In most cases you can leave the default value."
+          destination-file-name:
+            description: "The name of the file where the packed string will be stored. In most cases you can leave the default value."
             type: string
-            default: "~/pack-and-validate-orb/orb.yml"
+            default: "orb.yml"
 
         executor: cli/default
         steps:
@@ -31,15 +31,15 @@ orbs:
               command: |
                 echo "parameters.workspace-path passed as: '<< parameters.workspace-path >>' (if the string is empty no workspace save will be attempted)"
                 echo "parameters.artifact-path passed as: '<< parameters.artifact-path >>' (if the string is empty no artifact save will be attempted)"
-                echo "parameters.destination-path passed as: '<< parameters.destination-path >>'"
+                echo "parameters.destination-file-name passed as: '~/pack-and-validate-orb/<< parameters.destination-file-name >>'"
           - checkout
           - run:
               name: "Pack << parameters.path >>"
                # TODO: this is more fragile than is ideal
-               # TODO: this feels like a hack or a missing feature to have a small dose of shared state across the job that can be mutated at runtime
+               # TODO: using this fixed path feels like a hack or a missing feature to have a small dose of shared state across the job that can be mutated at runtime
               command: |
-                mkdir -p "$(dirname "<< parameters.destination-path >>")" && touch << parameters.destination-path >>
-                circleci config pack << parameters.path >> >> << parameters.destination-path >>
+                mkdir -pv ~/pack-and-validate-orb/ && touch ~/pack-and-validate-orb/<< parameters.destination-file-name >>
+                circleci config pack << parameters.path >> >> ~/pack-and-validate-orb/<< parameters.destination-file-name >>
           - run: 
               name: "Validate whether this is a well-formed orb."
               command: circleci orb validate $PACK_AND_VALIDATE_ORB_TEMPFILE
@@ -50,7 +50,7 @@ orbs:
                     name: Save the packed orb to `<< parameters.workspace-path >>`
                     command: |
                       mkdir -p << parameters.workspace-path >>
-                      cp << parameters.destination-path >> << parameters.workspace-path >>
+                      cp ~/pack-and-validate-orb/<< parameters.destination-file-name >> << parameters.workspace-path >>
                 - persist_to_workspace:
                     name: "putting the packed orb into `<< parameters.workspace-path >>` because that value was passed as `parameters.workspace-path`."
                     root: .
@@ -60,8 +60,8 @@ orbs:
               condition: << parameters.artifact-path >>
               steps:
                 - store_artifacts:
-                    name: "Storing the artifact to << parameters.destination-path >>"
-                    path: << parameters.destination-path >>
+                    name: "Storing the artifact to ~/pack-and-validate-orb/<< parameters.destination-file-name >>"
+                    path: ~/pack-and-validate-orb/<< parameters.destination-file-name >>
                     destination: orb
 
 workflows:
