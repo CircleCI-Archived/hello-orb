@@ -42,7 +42,7 @@ orbs:
                 circleci config pack << parameters.path >> >> ~/pack-and-validate-orb/<< parameters.destination-file-name >>
           - run: 
               name: "Validate whether this is a well-formed orb."
-              command: circleci orb validate $PACK_AND_VALIDATE_ORB_TEMPFILE
+              command: circleci orb validate ~/pack-and-validate-orb/<< parameters.destination-file-name >>
           - when:
               condition: << parameters.workspace-path >>
               steps:
