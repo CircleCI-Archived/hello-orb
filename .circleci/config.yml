@@ -19,6 +19,11 @@ orbs:
             description: "When provided, save the contents of the orb as an artifact at the path specified. Empty string (also the default value) is a no-op."
             type: string
             default: ""
+          destination-path:
+            description: "The path where the packed string will be stored as a file. In most cases you can leave the default value."
+            type: string
+            default: "~/pack-and-validate-orb/orb.yml"
+
         executor: cli/default
         steps:
           - run:
@@ -26,15 +31,15 @@ orbs:
               command: |
                 echo "parameters.workspace-path passed as: '<< parameters.workspace-path >>' (if the string is empty no workspace save will be attempted)"
                 echo "parameters.artifact-path passed as: '<< parameters.artifact-path >>' (if the string is empty no artifact save will be attempted)"
+                echo "parameters.destination-path passed as: '<< parameters.destination-path >>'"
           - checkout
           - run:
               name: "Pack << parameters.path >>"
                # TODO: this is more fragile than is ideal
                # TODO: this feels like a hack or a missing feature to have a small dose of shared state across the job that can be mutated at runtime
               command: |
-                tmpfile=$(mktemp orb.XXXX.yml)
-                circleci config pack << parameters.path >> >> $tmpfile
-                echo 'export PACK_AND_VALIDATE_ORB_TEMPFILE="$tmpfile"' >> $BASH_ENV
+                mkdir -p "$(dirname "<< parameters.destination-path >>")"
+                circleci config pack << parameters.path >> >> << parameters.destionation-path >>
           - run: 
               name: "Validate whether this is a well-formed orb."
               command: circleci orb validate $PACK_AND_VALIDATE_ORB_TEMPFILE
@@ -45,7 +50,7 @@ orbs:
                     name: Save the packed orb to `<< parameters.workspace-path >>`
                     command: |
                       mkdir -p << parameters.workspace-path >>
-                      cp $PACK_AND_VALIDATE_ORB_TEMPFILE << parameters.workspace-path >>
+                      cp << parameters.destination-path >> << parameters.workspace-path >>
                 - persist_to_workspace:
                     name: "putting the packed orb into `<< parameters.workspace-path >>` because that value was passed as `parameters.workspace-path`."
                     root: .
@@ -54,15 +59,9 @@ orbs:
           - when:
               condition: << parameters.artifact-path >>
               steps:
-                - run:
-                    name: Save the packed orb to `<< parameters.artifact-path >>`
-                    # TODO: This is duplicated from above
-                    command: |
-                      mkdir -p << parameters.artifact-path >>
-                      cp $PACK_AND_VALIDATE_ORB_TEMPFILE << parameters.artifact-path >>
                 - store_artifacts:
-                    name: "Storing the artifact to << parameters.artifact-path >>"
-                    path: << parameters.artifact-path >>
+                    name: "Storing the artifact to << parameters.destination-path >>"
+                    path: << parameters.destination-path >>
                     destination: orb
 
 workflows:
