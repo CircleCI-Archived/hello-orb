@@ -34,7 +34,7 @@ orbs:
               command: |
                 tmpfile=$(mktemp orb.XXXX.yml)
                 circleci config pack << parameters.path >> >> $tmpfile
-                'export PACK_AND_VALIDATE_ORB_TEMPFILE="$tmpfile"' >> $BASH_ENV
+                echo 'export PACK_AND_VALIDATE_ORB_TEMPFILE="$tmpfile"' >> $BASH_ENV
           - run: 
               name: "Validate whether this is a well-formed orb."
               command: circleci orb validate $PACK_AND_VALIDATE_ORB_FILE
