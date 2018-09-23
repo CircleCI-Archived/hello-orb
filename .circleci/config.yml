@@ -24,8 +24,8 @@ orbs:
           - run:
               name: "Starting the job: pack-and-validate-orb on the directory << parameters.path >>"
               command: |
-                echo: "parameters.workspace-path passed as: '<< parameters.workspace-path >>' (if the string is empty no workspace save will be attempted)"
-                echo: "parameters.artifact-path passed as: '<< parameters.artifact-path >>' (if the string is empty no artifact save will be attempted)"
+                echo "parameters.workspace-path passed as: '<< parameters.workspace-path >>' (if the string is empty no workspace save will be attempted)"
+                echo "parameters.artifact-path passed as: '<< parameters.artifact-path >>' (if the string is empty no artifact save will be attempted)"
           - checkout
           - run:
               name: "Pack << parameters.path >>"
