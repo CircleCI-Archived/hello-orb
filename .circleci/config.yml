@@ -62,7 +62,7 @@ orbs:
                 - store_artifacts:
                     name: "Storing the artifact to ~/pack-and-validate-orb/<< parameters.destination-file-name >>"
                     path: ~/pack-and-validate-orb/<< parameters.destination-file-name >>
-                    destination: << parameters.destination-file-name >>
+                    destination: << parameters.artifact-path >><< parameters.destination-file-name >>
 
 workflows:
   btd:
