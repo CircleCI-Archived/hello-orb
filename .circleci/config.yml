@@ -39,7 +39,7 @@ orbs:
                # TODO: this feels like a hack or a missing feature to have a small dose of shared state across the job that can be mutated at runtime
               command: |
                 mkdir -p "$(dirname "<< parameters.destination-path >>")"
-                circleci config pack << parameters.path >> >> << parameters.destionation-path >>
+                circleci config pack << parameters.path >> >> << parameters.destination-path >>
           - run: 
               name: "Validate whether this is a well-formed orb."
               command: circleci orb validate $PACK_AND_VALIDATE_ORB_TEMPFILE
