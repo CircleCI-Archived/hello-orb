@@ -16,7 +16,7 @@ orbs:
             type: string
             default: ""
           artifact-path:
-            description: "When provided, save the contents of the orb as an artifact at the path specified. Empty string (also the default value) is a no-op."
+            description: "When provided, save the contents of the orb as an artifact in the directory specified. Empty string (also the default value) is a no-op."
             type: string
             default: ""
           destination-file-name:
@@ -60,10 +60,41 @@ orbs:
               condition: << parameters.artifact-path >>
               steps:
                 - store_artifacts:
-                    name: "Storing the artifact to ~/pack-and-validate-orb/<< parameters.destination-file-name >>"
+                    name: "Storing the artifact to << parameters.artifact-path >><< parameters.destination-file-name >>"
                     path: ~/pack-and-validate-orb/<< parameters.destination-file-name >>
                     destination: << parameters.artifact-path >><< parameters.destination-file-name >>
-
+      publish-dev-orb:
+        executor: cli/default
+        parameters:
+          workspace-path:
+            type: string
+            default: ""
+          file-name:
+            description: "The name of the file where the packed string is stored. In most cases you can leave the default value."
+            type: string
+            default: "orb.yml"
+          do-validation:
+            description: "Boolean for whether to do validation. Default is true."
+            type: boolean
+            default: true
+        steps:
+          - when:
+              condition: << parameters.workspace-path >>
+              steps:
+                - attach_workspace:
+                    at: << parameters.workspace-path >>
+          - unless:
+              condition: << parameters.workspace-path >>
+              steps:
+                - run:
+                    name: "No workspace was passed."
+                    command: false
+          - when:
+              condition: << parameters.do-validation >>
+              steps:
+                - run: 
+                    name: "Validate whether this is a well-formed orb."
+                    command: circleci orb validate << parameters.workspace-path >>/<< parameters.file-name >>
 workflows:
   btd:
     jobs:
@@ -71,6 +102,9 @@ workflows:
           path: ./src
           workspace-path: orb-packed/
           artifact-path: orb-packed/
+      - orb-utils/publish-dev-orb:
+          workspace-path: orb-packed/
+
 
 
 
