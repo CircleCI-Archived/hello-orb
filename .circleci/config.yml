@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  orb-utils: circleci/orb-tools@dev:snapshot
+  orb-utils: circleci/orb-tools@dev:orb-tools
     # orbs:
     #   cli: circleci/circleci-cli@volatile
     # jobs:
@@ -12,7 +12,7 @@ orbs:
     #     parameters:
     #       path:
     #         description: >
-    #           The root of where the code for the orb lives 
+    #           The root of where the code for the orb lives
     #           relative to the root of the repo.
     #         type: string
     #       workspace-path:
@@ -54,7 +54,7 @@ orbs:
     #           command: |
     #             mkdir -pv ~/pack-and-validate-orb/ && touch ~/pack-and-validate-orb/<< parameters.destination-file-name >>
     #             circleci config pack << parameters.path >> >> ~/pack-and-validate-orb/<< parameters.destination-file-name >>
-    #       - run: 
+    #       - run:
     #           name: "Validate whether this is a well-formed orb."
     #           command: circleci orb validate ~/pack-and-validate-orb/<< parameters.destination-file-name >>
     #       - when:
@@ -85,7 +85,7 @@ orbs:
     #         type: string
     #       orb:
     #         description: "The orb name where this should be published."
-    #         type: string  
+    #         type: string
     #       label:
     #         description: "The label to use when publishing the dev orb (eg: if you pass `foo` you will publish to `dev:foo`)"
     #         type: string
@@ -121,7 +121,7 @@ orbs:
     #       - when:
     #           condition: << parameters.do-validation >>
     #           steps:
-    #             - run: 
+    #             - run:
     #                 name: "Validate whether this is a well-formed orb. Looking in << parameters.workspace-path >><< parameters.file-name >> for the file."
     #                 command: circleci orb validate << parameters.workspace-path >><< parameters.file-name >>
     #       - run:
