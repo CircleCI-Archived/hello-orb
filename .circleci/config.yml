@@ -6,10 +6,14 @@ orbs:
       cli: circleci/circleci-cli@volatile
     jobs:
       pack-and-validate-orb:
-        description: "Pack the contents of an orb for publishing and validate the orb is well-formed."
+        description: >
+          Pack the contents of an orb for publishing
+          and validate the orb is well-formed.
         parameters:
           path:
-            description: "The root of where the code for the orb lives relative to the root of the repo."
+            description: >
+              The root of where the code for the orb lives 
+              relative to the root of the repo.
             type: string
           workspace-path:
             description: "When provided, save the contents of the orb into the workspace at the given path. Empty string (also the default value) is a no-op."
