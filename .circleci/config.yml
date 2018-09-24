@@ -94,7 +94,7 @@ orbs:
               steps:
                 - run: 
                     name: "Validate whether this is a well-formed orb."
-                    command: circleci orb validate << parameters.workspace-path >>/<< parameters.file-name >>
+                    command: circleci orb validate << parameters.workspace-path >><< parameters.file-name >>
 workflows:
   btd:
     jobs:
