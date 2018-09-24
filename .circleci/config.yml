@@ -16,15 +16,25 @@ orbs:
               relative to the root of the repo.
             type: string
           workspace-path:
-            description: "When provided, save the contents of the orb into the workspace at the given path. Empty string (also the default value) is a no-op."
+            description: >
+              When provided, save the contents of the orb into
+              the workspace at the given path. The value should
+              include a trailing slash.
+              Empty string (also the default value) is a no-op.
             type: string
             default: ""
           artifact-path:
-            description: "When provided, save the contents of the orb as an artifact in the directory specified. Empty string (also the default value) is a no-op."
+            description: >
+              When provided, save the contents of the orb as an
+              artifact in the directory specified. The value should
+              include a trailing slash.
+              Empty string (also the default value) is a no-op."
             type: string
             default: ""
           destination-file-name:
-            description: "The name of the file where the packed string will be stored. In most cases you can leave the default value."
+            description: >
+              The name of the file where the packed string will be stored.
+              In most cases you can leave the default value of `orb.yml`.
             type: string
             default: "orb.yml"
 
