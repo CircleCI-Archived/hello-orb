@@ -80,11 +80,14 @@ orbs:
       publish-dev-orb:
         executor: cli/default
         parameters:
-          orb-ref:
-            description: "The orb ref where this should be published."
+          namespace:
+            description: "The namespace where this should be published."
             type: string
-          tag:
-            description: "The tag to use when publishing the dev orb"
+          orb:
+            description: "The orb name where this should be published."
+            type: string  
+          label:
+            description: "The label to use when publishing the dev orb (eg: if you pass `foo` you will publish to `dev:foo`)"
             type: string
           workspace-path:
             description: "The directory relative to the workspace root where the orb file will be found. Should end in a trailing /"
@@ -118,7 +121,15 @@ orbs:
                 - run: 
                     name: "Validate whether this is a well-formed orb. Looking in << parameters.workspace-path >><< parameters.file-name >> for the file."
                     command: circleci orb validate << parameters.workspace-path >><< parameters.file-name >>
-
+          - run:
+              name: "Publish a dev orb at << parameters.namespace >>/<< parameters.orb >>@dev:<< parameters.label >>"
+              command: >
+                echo "NOTE: this currently assumes you are publishing to the registry at circleci.com"
+                circleci orb publish dev
+                << parameters.workspace-path >><< parameters.file-name >>
+                << parameters.namespace >>
+                << parameters.orb >>
+                << parameters.label >>
 workflows:
   btd:
     jobs:
@@ -128,8 +139,9 @@ workflows:
           artifact-path: orb-packed/
           name: pack-and-validate
       - orb-utils/publish-dev-orb:
-          orb-ref: circleci/hello-build
-          tag: ${CIRCLE_BRANCH}
+          namespace: circleci
+          orb: hello-build
+          label: ${CIRCLE_BRANCH}
           workspace-path: orb-packed/
           requires: [pack-and-validate]
 
