@@ -67,6 +67,7 @@ orbs:
         executor: cli/default
         parameters:
           workspace-path:
+            description: "The directory relative to the workspace root where the orb file will be found. Should end in a trailing /"
             type: string
             default: ""
           file-name:
@@ -82,19 +83,18 @@ orbs:
               condition: << parameters.workspace-path >>
               steps:
                 - attach_workspace:
-                    at: << parameters.workspace-path >>
+                    at: .
           - unless:
               condition: << parameters.workspace-path >>
               steps:
                 - run:
                     name: "No workspace was passed."
                     command: false
-          - run: ls -Ral
           - when:
               condition: << parameters.do-validation >>
               steps:
                 - run: 
-                    name: "Validate whether this is a well-formed orb."
+                    name: "Validate whether this is a well-formed orb. Looking in << parameters.workspace-path >><< parameters.file-name >> for the file."
                     command: circleci orb validate << parameters.workspace-path >><< parameters.file-name >>
 workflows:
   btd:
