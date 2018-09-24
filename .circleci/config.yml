@@ -95,7 +95,9 @@ orbs:
               steps:
                 - run:
                     name: "No workspace was passed."
-                    command: false
+                    command: |
+                      echo "No workspace was passed."
+                      exit 1
           - when:
               condition: << parameters.do-validation >>
               steps:
