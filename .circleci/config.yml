@@ -109,13 +109,14 @@ workflows:
   btd:
     jobs:
       - orb-utils/pack-and-validate-orb:
-          path: ./src
+          path: ./src/
           workspace-path: orb-packed/
           artifact-path: orb-packed/
           name: pack-and-validate
       - orb-utils/publish-dev-orb:
           orb-ref: circleci/hello-build
           tag: ${CIRCLE_BRANCH}
+          workspace-path: orb-packed/
           requires: [pack-and-validate]
 
 
