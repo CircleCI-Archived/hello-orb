@@ -89,6 +89,7 @@ orbs:
                 - run:
                     name: "No workspace was passed."
                     command: false
+          - run: ls -al
           - when:
               condition: << parameters.do-validation >>
               steps:
