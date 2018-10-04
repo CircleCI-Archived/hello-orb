@@ -16,7 +16,7 @@ workflows:
           label: ${CIRCLE_BRANCH}
           dev-token-variable: "$CIRCLECI_API_TOKEN"
           workspace-path: orb-packed/
-          requires: [pack-and-validate-orb]
+          requires: [orb-tools/pack-and-validate-orb]
 
       - orb-tools/increment-orb:
           orb-path: orb-packed/orb.yml
@@ -24,8 +24,8 @@ workflows:
           orb-name: hello-build
           segment: "patch"
           workspace-path: orb-packed/
-          token-variable: "$CIRCLECI_API_TOKEN"
-          requires: [pack-and-validate-orb]
+          release-token-variable: "$CIRCLECI_API_TOKEN"
+          requires: [orb-tools/pack-and-validate-orb]
           filters:
             branches:
               only: master
