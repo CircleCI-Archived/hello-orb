@@ -11,9 +11,11 @@ workflows:
           artifact-path: orb-packed/
 
       - orb-tools/publish-orb:
-          orb-ref: circleci/hello-build@dev:${CIRCLE_BRANCH}
+          namespace: circleci
+          orb-name: hello-build
+          label: ${CIRCLE_BRANCH}
+          dev-token-variable: "$CIRCLECI_API_TOKEN"
           workspace-path: orb-packed/
-          token-variable: "$CIRCLECI_API_TOKEN"
           requires: [pack-and-validate-orb]
 
       - orb-tools/increment-orb:
