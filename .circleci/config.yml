@@ -10,7 +10,7 @@ workflows:
           workspace-path: orb-packed/
           artifact-path: orb-packed/
 
-      - orb-tools/publish-orb:
+      - orb-tools/publish-dev-orb:
           namespace: circleci
           orb-name: hello-build
           label: ${CIRCLE_BRANCH}
