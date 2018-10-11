@@ -5,27 +5,31 @@ orbs:
 workflows:
   btd:
     jobs:
-      - orb-tools/pack-and-validate-orb:
-          path: ./src/
-          workspace-path: orb-packed/
-          artifact-path: orb-packed/
+      - orb-tools/pack:
+          source-dir: src/
+          destination-orb-path: packed/orb.yml
+          workspace-path: packed/orb.yml
+          artifact-path: packed/orb.yml
+          validate: true
 
-      - orb-tools/publish-dev-orb:
-          namespace: circleci
-          orb-name: hello-build
-          label: ${CIRCLE_BRANCH}
-          dev-token-variable: "$CIRCLECI_API_TOKEN"
-          workspace-path: orb-packed/
-          requires: [orb-tools/pack-and-validate-orb]
+      - orb-tools/publish:
+          orb-path: packed/orb.yml
+          orb-ref: "circleci/hello-build@dev:${CIRCLE_BRANCH}"
+          publish-token-variable: "$CIRCLECI_API_TOKEN"
+          attach-workspace: true
+          checkout: false
+          validate: true
+          requires: [orb-tools/pack]
 
-      - orb-tools/increment-orb:
-          orb-path: orb-packed/orb.yml
-          namespace: circleci
-          orb-name: hello-build
-          segment: "patch"
-          workspace-path: orb-packed/
-          release-token-variable: "$CIRCLECI_API_TOKEN"
-          requires: [orb-tools/pack-and-validate-orb]
-          filters:
-            branches:
-              only: master
+     - orb-tools/increment:
+         orb-path: packed/orb.yml
+         orb-ref: "circleci/hello-build"
+         segment: "patch"
+         publish-token-variable: "$CIRCLECI_API_TOKEN"
+         attach-workspace: true
+         checkout: false
+         validate: true
+         requires: [orb-tools/pack]
+         filters:
+           branches:
+             only: master
