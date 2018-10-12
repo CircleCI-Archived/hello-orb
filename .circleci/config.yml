@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  orb-tools: circleci/orb-tools@volatile
+  orb-tools: circleci/orb-tools@2
 workflows:
   btd:
     jobs:
