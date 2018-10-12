@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  orb-tools: circleci/orb-tools@volatile
+  orb-tools: circleci/orb-tools@2
 workflows:
   btd:
     jobs:
@@ -10,7 +10,6 @@ workflows:
           destination-orb-path: packed/orb.yml
           workspace-path: packed/orb.yml
           artifact-path: packed/orb.yml
-          validate: true
 
       - orb-tools/publish:
           orb-path: packed/orb.yml
@@ -18,7 +17,6 @@ workflows:
           publish-token-variable: "$CIRCLECI_API_TOKEN"
           attach-workspace: true
           checkout: false
-          validate: true
           requires: [orb-tools/pack]
 
       - orb-tools/increment:
@@ -28,7 +26,6 @@ workflows:
           publish-token-variable: "$CIRCLECI_API_TOKEN"
           attach-workspace: true
           checkout: false
-          validate: true
           requires: [orb-tools/pack]
           filters:
             branches:
