@@ -1,5 +1,7 @@
 version: 2.1
-description: An orb with some simple ways to help you with your first build.
+
+description: |
+  A simple "Hello, World!" orb
 
 executors:
   default:
