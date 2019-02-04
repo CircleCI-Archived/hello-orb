@@ -1,6 +1,6 @@
 
 description: |
-  Invoke the hello-build orb.
+  Invoke and run the hello-build orb.
 usage:
   version: 2.1
 
