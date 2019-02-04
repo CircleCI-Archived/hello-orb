@@ -7,5 +7,7 @@ usage:
   orbs:
     hello-build: circleci/hello-build@0.0.8
 
-  jobs:
-    - hello-build/hello-build
+  workflows:
+    "Hello Workflow":
+        jobs:
+          - hello-build/hello-build
