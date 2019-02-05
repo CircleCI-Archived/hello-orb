@@ -3,4 +3,4 @@ steps:
       name: "Show system information"
       command: |
         echo "uname:" $(uname -a)
-        echo "arch: " $(arch)
+        echo "arch: " $(uname -m)

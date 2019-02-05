@@ -5,17 +5,18 @@ description: |
 
 executors:
   default:
-    parameters:
-      tag:
-        type: string
-        default: "curl-browsers"
     docker:
-      - image:  circleci/buildpack-deps:<< parameters.tag >>
+      - image:  bash:4.4.19
 
 jobs:
   hello-build:
+    parameters:
+      to:
+        type: string
+        default: "${CIRCLE_USERNAME}"
     executor: default
     steps:
-      - hello-triggerer
+      - hello-triggerer:
+          to: <<parameters.to>>
       - circleci-env-highlights
       - system-info
