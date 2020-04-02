@@ -2,8 +2,9 @@ version: 2.1
 
 description: >
   A simple "Hello, World!" orb
-  Repository: https://github.com/CircleCI-Public/hello-orb
-
+display:
+  home_url: https://github.com/CircleCI-Public/hello-orb
+  
 executors:
   default:
     docker:
