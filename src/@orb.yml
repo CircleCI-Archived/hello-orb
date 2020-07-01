@@ -1,22 +1,22 @@
-version: 2.1
-
 description: |
   A simple "Hello, World!" orb
-
+display:
+  source_url: https://github.com/circleci-public/hello-orb
 executors:
   default:
     docker:
-      - image:  bash:4.4.19
-
+    - image: bash:4.4.19
 jobs:
   hello-build:
+    executor: default
     parameters:
       to:
+        default: ${CIRCLE_USERNAME}
         type: string
-        default: "${CIRCLE_USERNAME}"
-    executor: default
     steps:
-      - hello-triggerer:
-          to: <<parameters.to>>
-      - circleci-env-highlights
-      - system-info
+    - hello-triggerer:
+        to: <<parameters.to>>
+    - circleci-env-highlights
+    - system-info
+version: 2.1
+
